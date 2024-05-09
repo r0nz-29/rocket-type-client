@@ -1,4 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.d {
+    border: 1px solid red;
+}
+
+.dotted-background {
+    background-image: radial-gradient(#222 5%,#0000001f 15%);
+    background-color: #000;
+    position: fixed!important;
+    background-position: 0 0,14px 14px;
+    background-size: 16px 16px;
+    width: 100%;
+}
+
+.good-font {
+    font-family: 'Inter Variable';
 }
