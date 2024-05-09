@@ -1,4 +1,5 @@
 import {create} from "zustand";
+import {getParagraph} from "../utils";
 
 export const WORD_COUNT = 30;
 export const MULTIPLAYER_GAME_DURATION = 50;
@@ -46,6 +47,14 @@ export type PointT = {
   y: number;
 };
 
+export type ResultT = {
+  wpm: number,
+  accuracy: number,
+  mode: string,
+  errors: number,
+  duration: number,
+};
+
 type State = {
   soloParagraph: string;
   lobbyParagraph: string;
@@ -56,9 +65,9 @@ type State = {
   errors: number,
   findingRoom: boolean,
   roomName: string,
-  roomMembers: {},
+  // roomMembers: {},
   waitingTimeout: number,
-  graph: PointT[],
+  wpmGraph: PointT[],
   errorPoints: PointT[],
   gameState: string,
   // board: [],
@@ -79,10 +88,13 @@ type Actions = {
   // setRoomMembers: members => set(() => ({roomMembers: members})),
   incrementCursor: () => void;
   incrementErrors: () => void;
+  updateGameState: (state: string) => void;
+  updateTypedParagraph: (char: string) => void;
+  updateWpmGraph: (point: PointT) => void;
 }
 
-export const useGlobalState = create<State & Actions>((set) => ({
-  soloParagraph: "",
+export const useStore = create<State & Actions>((set) => ({
+  soloParagraph: getParagraph(),
   lobbyParagraph: "",
   activeDuration: DURATIONS[0],
   soloDifficulty: DIFFICULTIES.EASY,
@@ -93,7 +105,7 @@ export const useGlobalState = create<State & Actions>((set) => ({
   roomName: "",
   roomMembers: {},
   waitingTimeout: -1,
-  graph: [],
+  wpmGraph: [],
   errorPoints: [],
   gameState: GAME_STATES.IDLE,
   account: {email: "", username: ""},
@@ -108,4 +120,7 @@ export const useGlobalState = create<State & Actions>((set) => ({
   setWaitingTimeout: time => set(() => ({waitingTimeout: time})),
   incrementCursor: () => set(state => ({cursorPosition: state.cursorPosition + 1})),
   incrementErrors: () => set(state => ({errors: state.errors + 1})),
+  updateGameState: (state) => set(() => ({gameState: state})),
+  updateWpmGraph: (p) => set((state) => ({wpmGraph: [...state.wpmGraph, p]})),
+  updateTypedParagraph: (char: string) => set((state) => ({typedParagraph: state.typedParagraph + char})),
 }));
