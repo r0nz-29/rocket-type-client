@@ -2,7 +2,8 @@ import {GAME_STATES, useStore} from "../../store";
 import useGame from "../../hooks/useGame.ts";
 import DurationSelector from "./select-duration.tsx";
 import DifficultySelector from "./select-difficulty.tsx";
-import Results from "./results.tsx";
+import Results from "./results";
+import {gradient} from "../../utils";
 
 export default function SoloTest() {
   const {soloParagraph: words, activeDuration} = useStore();
@@ -37,7 +38,7 @@ export default function SoloTest() {
       </div>
       <button
         disabled={gameState === GAME_STATES.TYPING}
-        className={`transition-all text-white ${gameState === GAME_STATES.IDLE ? "opacity-100 bg-gradient-to-tl from-blue-500 via-violet-500 to-red-400" : "opacity-0 hover:text-gray-200 bg-zinc-800 border border-zinc-700"} rounded-full px-6 py-2 text-lg font-bold mt-8`}
+        className={`transition-all text-white ${gameState === GAME_STATES.IDLE ? `opacity-100 ${gradient}` : "opacity-0 hover:text-gray-200 bg-zinc-800 border border-zinc-700"} rounded-full px-6 py-2 text-lg font-bold mt-8`}
         onClick={startGame}
       >
         Start

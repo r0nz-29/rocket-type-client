@@ -37,3 +37,5 @@ export function random(max: number) {
   if (res >= max) return max-1;
   else return res;
 }
+
+export const gradient = "bg-gradient-to-tl from-nord9 via-nord7 to-nord14";

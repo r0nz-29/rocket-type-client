@@ -68,7 +68,7 @@ type State = {
   // roomMembers: {},
   waitingTimeout: number,
   wpmGraph: PointT[],
-  errorPoints: PointT[],
+  errorGraph: PointT[],
   gameState: string,
   // board: [],
   account: AccountT,
@@ -91,6 +91,7 @@ type Actions = {
   updateGameState: (state: string) => void;
   updateTypedParagraph: (char: string) => void;
   updateWpmGraph: (point: PointT) => void;
+  updateErrorGraph: (point: PointT) => void;
 }
 
 export const useStore = create<State & Actions>((set) => ({
@@ -106,7 +107,7 @@ export const useStore = create<State & Actions>((set) => ({
   roomMembers: {},
   waitingTimeout: -1,
   wpmGraph: [],
-  errorPoints: [],
+  errorGraph: [],
   gameState: GAME_STATES.IDLE,
   account: {email: "", username: ""},
   accessToken: null,
@@ -122,5 +123,6 @@ export const useStore = create<State & Actions>((set) => ({
   incrementErrors: () => set(state => ({errors: state.errors + 1})),
   updateGameState: (state) => set(() => ({gameState: state})),
   updateWpmGraph: (p) => set((state) => ({wpmGraph: [...state.wpmGraph, p]})),
+  updateErrorGraph: (p) => set((state) => ({errorGraph: [...state.errorGraph, p]})),
   updateTypedParagraph: (char: string) => set((state) => ({typedParagraph: state.typedParagraph + char})),
 }));

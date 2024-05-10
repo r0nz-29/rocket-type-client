@@ -17,8 +17,8 @@ export default function useGame(duration: number, mode = GAME_MODES.SOLO) {
     soloParagraph,
     updateGameState,
     updateTypedParagraph: updateParagraph,
-    updateWpmGraph
-    // updateErrorPoints,
+    updateWpmGraph,
+    updateErrorGraph
   } = useStore();
 
   let words = soloParagraph;
@@ -66,7 +66,6 @@ export default function useGame(duration: number, mode = GAME_MODES.SOLO) {
     if (e.key !== words[cursor]) {
       char.style.color = "#f00";
       char.style.fontWeight = "bold";
-      // updateErrorPoints({x: duration - currentTime, y: wpm > 0 ? wpm : 0})
       incrementErrors();
       return;
     } else {
@@ -103,6 +102,7 @@ export default function useGame(duration: number, mode = GAME_MODES.SOLO) {
     }
 
     updateWpmGraph({y: Math.max(wpm, 0), x: duration - currentTime});
+    updateErrorGraph({y: Math.max(errors, 0), x: duration - currentTime});
   }, [currentTime]);
 
   return {
