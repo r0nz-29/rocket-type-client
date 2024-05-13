@@ -26,7 +26,7 @@ export default function SoloTest() {
         className={`justify-start w-1/2 text-xl mb-4 ${gameState === GAME_STATES.TYPING ? "text-yellow-300" : "text-[#333]"}`}>
         {currentTime}s
       </p>
-      <div className="relative w-1/2 h-fit">
+      <div className="w-1/2 h-fit">
         <p className="break-all text-xl w-full p-4 border border-slate-200 rounded-lg bg-white shadow">
           {words.split("").map((char, i) => (
             <span key={i} id={`char-at-${i}`}

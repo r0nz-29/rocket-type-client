@@ -29,7 +29,14 @@ export const SPECIAL_KEYS = new Set([
 export const GAME_STATES = {
   TYPING: "typing",
   IDLE: "idle",
-  COMPLETED: "completed"
+  COMPLETED: "completed",
+  MULTIPLAYER: {
+    WAITING: "MULTIPLAYER_WAITING",
+    COUNTDOWN: "MULTIPLAYER_COUNTDOWN",
+    TYPING: "MULTIPLAYER_TYPING",
+    COMPLETED: "MULTIPLAYER_COMPLETED",
+    RESULTS: "MULTIPLAYER_RESULTS",
+  }
 };
 
 export const GAME_MODES = {
@@ -55,36 +62,47 @@ export type ResultT = {
   duration: number,
 };
 
+export type MultiplayerResultGraphT = {
+  username: string,
+  wpm: number,
+  errors: number
+}[];
+
 type State = {
+  gameState: string;
   soloParagraph: string;
-  lobbyParagraph: string;
   activeDuration: number;
-  soloDifficulty: string,
-  typedParagraph: string,
-  cursorPosition: number,
-  errors: number,
-  findingRoom: boolean,
-  roomName: string,
-  // roomMembers: {},
-  waitingTimeout: number,
-  wpmGraph: PointT[],
-  errorGraph: PointT[],
-  gameState: string,
-  // board: [],
-  account: AccountT,
-  accessToken: null | string
+  soloDifficulty: string;
+  typedParagraph: string;
+  cursorPosition: number;
+  errors: number;
+  wpmGraph: PointT[];
+  errorGraph: PointT[];
+  account: AccountT;
+  accessToken: null | string;
+  multiplayer: {
+    username: string | null,
+    paragraph: string | null;
+    roomMembers: string[];
+    roomId: string | null;
+    countdown: number;
+    socketError: null | string;
+    startingGame: boolean;
+    duration: number;
+    resultGraph: MultiplayerResultGraphT | null
+  }
 }
 
 type Actions = {
   setAccount: (account: AccountT) => void,
   setAccessToken: (token: string | null) => void,
-  setRoomName: (name: string) => void,
+  setRoomId: (id: string) => void,
   // setBoard: board => set(() => ({board})),
-  setLobbyPara: (para: string) => void,
+  setMultiplayerPara: (para: string) => void,
   setSoloPara: (para: string) => void,
   setSoloDifficulty: (diff: string) => void,
   setActiveDuration: (dur: number) => void,
-  setWaitingTimeout: (time: number) => void,
+  setCountdown: (time: number) => void,
   // setRoomMembers: members => set(() => ({roomMembers: members})),
   incrementCursor: () => void;
   incrementErrors: () => void;
@@ -92,20 +110,36 @@ type Actions = {
   updateTypedParagraph: (char: string) => void;
   updateWpmGraph: (point: PointT) => void;
   updateErrorGraph: (point: PointT) => void;
+  setSocketError: (error: string) => void;
+  setRoomMembers: (members: string[]) => void;
+  addRoomMember: (member: string) => void;
+  setUsername: (name: string) => void;
+  decrementCountdown: () => void;
+  showStartingGame: () => void;
+  hideStartingGame: () => void;
+  setMultiplayerDuration: (d: number) => void;
+  tickMultiplayerDuration: () => void;
 }
 
 export const useStore = create<State & Actions>((set) => ({
-  soloParagraph: getParagraph(),
+  soloParagraph: getParagraph() ?? "",
   lobbyParagraph: "",
   activeDuration: DURATIONS[0],
   soloDifficulty: DIFFICULTIES.EASY,
   typedParagraph: "",
   cursorPosition: 0,
   errors: 0,
-  findingRoom: false,
-  roomName: "",
-  roomMembers: {},
-  waitingTimeout: -1,
+  multiplayer: {
+    username: null,
+    paragraph: null,
+    roomMembers: [],
+    roomId: null,
+    countdown: 10,
+    socketError: null,
+    startingGame: false,
+    duration: 0,
+    resultGraph: null
+  },
   wpmGraph: [],
   errorGraph: [],
   gameState: GAME_STATES.IDLE,
@@ -113,16 +147,55 @@ export const useStore = create<State & Actions>((set) => ({
   accessToken: null,
   setAccount: (account) => set(() => ({account})),
   setAccessToken: (token) => set(() => ({accessToken: token})),
-  setRoomName: name => set(() => ({roomName: name})),
-  setLobbyPara: para => set(() => ({lobbyParagraph: para})),
+  setRoomId: id => set((state) => ({multiplayer: {...state.multiplayer, roomId: id}})),
+  setMultiplayerPara: para => set((state) => ({multiplayer: {...state.multiplayer, paragraph: para}})),
   setSoloPara: para => set(() => ({soloParagraph: para})),
   setSoloDifficulty: diff => set(() => ({soloDifficulty: diff})),
   setActiveDuration: dur => set(() => ({activeDuration: dur})),
-  setWaitingTimeout: time => set(() => ({waitingTimeout: time})),
   incrementCursor: () => set(state => ({cursorPosition: state.cursorPosition + 1})),
   incrementErrors: () => set(state => ({errors: state.errors + 1})),
   updateGameState: (state) => set(() => ({gameState: state})),
   updateWpmGraph: (p) => set((state) => ({wpmGraph: [...state.wpmGraph, p]})),
   updateErrorGraph: (p) => set((state) => ({errorGraph: [...state.errorGraph, p]})),
-  updateTypedParagraph: (char: string) => set((state) => ({typedParagraph: state.typedParagraph + char})),
+  updateTypedParagraph: (char) => set((state) => ({typedParagraph: state.typedParagraph + char})),
+  setSocketError: (err) => set((state) => ({multiplayer: {...state.multiplayer, socketError: err}})),
+  setRoomMembers: (m) => set((state) => ({multiplayer: {...state.multiplayer, roomMembers: m}})),
+  addRoomMember: (m) => set((state) => ({
+    multiplayer: {
+      ...state.multiplayer,
+      roomMembers: [m, ...state.multiplayer.roomMembers]
+    }
+  })),
+  setUsername: (name) => set((state) => ({multiplayer: {...state.multiplayer, username: name}})),
+  setCountdown: time => set((state) => ({multiplayer: {...state.multiplayer, waitingTimeout: time}})),
+  decrementCountdown: () => set((state) => ({
+    multiplayer: {
+      ...state.multiplayer,
+      countdown: Math.max(state.multiplayer.countdown - 1, 0)
+    }
+  })),
+  showStartingGame: () => set((state) => ({
+    multiplayer: {
+      ...state.multiplayer,
+      startingGame: true,
+    }
+  })),
+  hideStartingGame: () => set((state) => ({
+    multiplayer: {
+      ...state.multiplayer,
+      startingGame: false,
+    }
+  })),
+  setMultiplayerDuration: (d) => set((state) => ({
+    multiplayer: {
+      ...state.multiplayer,
+      duration: d,
+    }
+  })),
+  tickMultiplayerDuration: () => set((state) => ({
+    multiplayer: {
+      ...state.multiplayer,
+      duration: Math.max(state.multiplayer.duration - 1, 0),
+    }
+  })),
 }));

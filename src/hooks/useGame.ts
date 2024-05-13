@@ -2,10 +2,9 @@ import {GAME_MODES, GAME_STATES, SPECIAL_KEYS, useStore} from "../store";
 import {useCallback, useEffect, useState} from "react";
 import {calculateWPM} from "../utils";
 import useTimer from "./useTimer.ts";
-import {socket} from "../socket";
 
 export default function useGame(duration: number, mode = GAME_MODES.SOLO) {
-  const {currentTime} = useTimer(duration);
+  const {currentTime} = useTimer(duration, mode);
   const {
     typedParagraph: typed,
     cursorPosition: cursor,
@@ -13,7 +12,7 @@ export default function useGame(duration: number, mode = GAME_MODES.SOLO) {
     gameState,
     incrementCursor,
     incrementErrors,
-    lobbyParagraph,
+    multiplayer,
     soloParagraph,
     updateGameState,
     updateTypedParagraph: updateParagraph,
@@ -21,8 +20,7 @@ export default function useGame(duration: number, mode = GAME_MODES.SOLO) {
     updateErrorGraph
   } = useStore();
 
-  let words = soloParagraph;
-  if (mode === GAME_MODES.MULTIPLAYER) words = lobbyParagraph;
+  const words = (mode === GAME_MODES.MULTIPLAYER) ? multiplayer.paragraph ?? "" : soloParagraph;
 
   const [liveWpm, setLiveWpm] = useState(0);
 
@@ -38,16 +36,16 @@ export default function useGame(duration: number, mode = GAME_MODES.SOLO) {
 
   useEffect(() => {
     if (gameState === GAME_STATES.COMPLETED && mode === GAME_MODES.MULTIPLAYER) {
-      const acc = 100 * ((typed.length - errors) / typed.length);
-      const wpm = calculateWPM(typed, errors, duration - currentTime);
-      socket.emit("new_wpm", {
-        speed: wpm,
-        pos: cursor,
-        over: true,
-        errors: errors,
-        accuracy: acc > 0 ? acc : 0
-      });
-      console.log("sent");
+      // const acc = 100 * ((typed.length - errors) / typed.length);
+      // const wpm = calculateWPM(typed, errors, duration - currentTime);
+      // socket.emit("new_wpm", {
+      //   speed: wpm,
+      //   pos: cursor,
+      //   over: true,
+      //   errors: errors,
+      //   accuracy: acc > 0 ? acc : 0
+      // });
+      // console.log("sent");
     }
   }, [gameState]);
 
@@ -58,9 +56,11 @@ export default function useGame(duration: number, mode = GAME_MODES.SOLO) {
   }, [cursor, updateGameState, words, words.length]);
 
   const handleKeydown = useCallback((e: KeyboardEvent) => {
-    if (gameState === GAME_STATES.IDLE || gameState === GAME_STATES.COMPLETED || SPECIAL_KEYS.has(e.key)) return;
+    if (gameState !== GAME_STATES.TYPING || SPECIAL_KEYS.has(e.key)) return;
 
-    const char = document.getElementById(`char-at-${cursor}`);
+    const identifier = (mode === GAME_MODES.MULTIPLAYER) ? "multi-char-at" : "char-at";
+
+    const char = document.getElementById(`${identifier}-${cursor}`);
     if (!char) return;
 
     if (e.key !== words[cursor]) {
@@ -78,7 +78,7 @@ export default function useGame(duration: number, mode = GAME_MODES.SOLO) {
   }, [gameState, words, cursor, incrementErrors]);
 
   useEffect(() => {
-    if (gameState === GAME_STATES.IDLE) return;
+    if (gameState !== GAME_STATES.TYPING) return;
 
     window.addEventListener("keydown", handleKeydown);
     return () => window.removeEventListener("keydown", handleKeydown);
@@ -87,20 +87,7 @@ export default function useGame(duration: number, mode = GAME_MODES.SOLO) {
   useEffect(() => {
     if (currentTime < 0 || gameState !== GAME_STATES.TYPING) return;
     const wpm = calculateWPM(typed, errors, duration - currentTime);
-
-    if (mode === GAME_MODES.MULTIPLAYER) {
-      const acc = 100 * ((typed.length - errors) / typed.length);
-      socket.emit("new_wpm", {
-        speed: wpm,
-        pos: cursor,
-        over: false,
-        errors: errors,
-        accuracy: acc > 0 ? acc : 0
-      });
-    } else {
-      setLiveWpm(wpm);
-    }
-
+    setLiveWpm(wpm);
     updateWpmGraph({y: Math.max(wpm, 0), x: duration - currentTime});
     updateErrorGraph({y: Math.max(errors, 0), x: duration - currentTime});
   }, [currentTime]);

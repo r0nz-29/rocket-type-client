@@ -19,7 +19,7 @@ export function Home() {
           Practice
         </button>
         <button
-          // onClick={() => props.setOpenModal("default")}
+          onClick={() => navigate("/multiplayer")}
           className={`good-font text-white ${gradient} rounded-full px-6 py-2 text-md font-medium`}>
           Compete
         </button>

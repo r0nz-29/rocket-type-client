@@ -2,6 +2,7 @@ import {Route, Routes} from "react-router-dom";
 import {Header} from "./common/header";
 import {Home} from "./pages/home";
 import SoloGame from "./pages/solo";
+import Multiplayer from "./pages/multiplayer";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/solo" element={<SoloGame/>}/>
+        <Route path="/multiplayer" element={<Multiplayer/>}/>
       </Routes>
     </div>
   );
