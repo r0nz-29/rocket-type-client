@@ -41,17 +41,21 @@ function MultiplayerGraph() {
         },
         xaxis: {
           categories: resultGraph.map(r => r.username),
-          title: {
-            text: "wpm"
-          }
-        },
-        plotOptions: {
-          bar: {
-            colors: {
-              backgroundBarColors: [wpmColor]
+          labels: {
+            style: {
+              fontFamily: "JetBrains Mono"
             }
           }
-        }
+        },
+        colors: [wpmColor],
+        yaxis: {
+          title: {
+            text: "wpm",
+            style: {
+              fontFamily: "JetBrains Mono"
+            }
+          }
+        },
       }}
     />
   );

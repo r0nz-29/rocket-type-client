@@ -29,8 +29,8 @@ export default function useSocket() {
   }
 
   function startCountdown(roomId: string) {
-    console.log("sent" + roomId);
     socket.emit("game:countdown:start", roomId);
+    showLoading();
   }
 
   function gameListeners() {
@@ -43,7 +43,6 @@ export default function useSocket() {
     });
 
     socket.on("game:result:publish", (resultGraph) => {
-      console.log(resultGraph);
       setMultiplayerResults(resultGraph);
       updateGameState(GAME_STATES.MULTIPLAYER.RESULTS);
     });
@@ -57,6 +56,7 @@ export default function useSocket() {
       setMultiplayerPara(para);
       setCountdown(countdown);
       updateGameState(GAME_STATES.MULTIPLAYER.COUNTDOWN);
+      hideLoading();
     });
 
     socket.on("game:countdown:tick", () => {
@@ -105,7 +105,6 @@ export default function useSocket() {
   }
 
   function getRoomMembers(roomId: string) {
-    console.log("sending");
     socket.emit("room:get-members", roomId);
   }
 
