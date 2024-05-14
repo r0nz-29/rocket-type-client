@@ -4,7 +4,7 @@ import {GAME_MODES, GAME_STATES, useStore} from "../store";
 export default function useTimer(duration: number, mode = GAME_MODES.SOLO) {
   const [timerInSec, setTimerInSec] = useState(duration);
   const {gameState, updateGameState, activeDuration} = useStore();
-  const {duration: currentTime} = useStore(state => state.multiplayer);
+  const {gameTimer: currentTime} = useStore(state => state.multiplayer);
 
   useEffect(() => {
     if (mode === GAME_MODES.MULTIPLAYER) return;

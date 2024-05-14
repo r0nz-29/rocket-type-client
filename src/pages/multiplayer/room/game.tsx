@@ -1,15 +1,15 @@
 import {GAME_MODES, GAME_STATES, useStore} from "../../../store";
 import {Spinner} from "@chakra-ui/react";
 import useSocket from "../../../hooks/useSocket.ts";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import useGame from "../../../hooks/useGame.ts";
+import MultiplayerResults from "./result.tsx";
 
 export default function MultiplayerGame() {
-  const {paragraph, countdown, duration, roomId} = useStore(state => state.multiplayer);
-  const [multiplayerDuration] = useState<number>(duration);
+  const {paragraph, countdown, gameTimer, duration, roomId} = useStore(state => state.multiplayer);
   const {gameListeners, syncResults} = useSocket();
   const {gameState} = useStore();
-  const {cursor, liveWpm, errors} = useGame(multiplayerDuration, GAME_MODES.MULTIPLAYER);
+  const {cursor, liveWpm, errors} = useGame(duration, GAME_MODES.MULTIPLAYER);
 
 
   useEffect(() => {
@@ -24,9 +24,11 @@ export default function MultiplayerGame() {
 
   if (!paragraph) return <Spinner/>;
 
+  if (new Set([GAME_STATES.MULTIPLAYER.RESULTS, GAME_STATES.MULTIPLAYER.COMPLETED]).has(gameState)) return <MultiplayerResults/>;
+
   return (
     <div className="container max-w-7xl flex flex-col flex-1 justify-center">
-      <p className="text-2xl text-center w-full text-nord0 font-black">{duration}s</p>
+      <p className="text-2xl text-center w-full text-nord0 font-black">{gameTimer}s</p>
       <br/>
       <p
         className={`transition-all ease-out text-nord1 text-center ${gameState === GAME_STATES.TYPING ? "text-2xl" : "hidden"}`}>

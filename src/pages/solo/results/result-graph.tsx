@@ -1,12 +1,13 @@
 import Chart from "react-apexcharts";
 import {useStore} from "../../../store";
 
+export const wpmColor = "#5E81AC";
+export const errorColor = "#BF616A";
+
 export default function ResultGraph() {
   const {wpmGraph, errorGraph} = useStore();
   const wpmSeries = wpmGraph.map(p => ({x: Math.trunc(p.x), y: p.y.toFixed(2)}));
   const errorSeries = errorGraph.map(p => ({x: Math.trunc(p.x), y: Math.trunc(p.y)}));
-  const wpmColor = "#5E81AC";
-  const errorColor = "#BF616A";
   return (
     <Chart
       type="area"
@@ -15,7 +16,7 @@ export default function ResultGraph() {
         {data: errorSeries, name: "errors", color: errorColor, type: "area"}
       ]}
       width="100%"
-      height={400}
+      height={300}
       options={{
         xaxis: {
           type: "numeric",

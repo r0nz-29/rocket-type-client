@@ -43,7 +43,7 @@ export default function Multiplayer() {
   }, [socketError, errorNotification]);
 
   // counter before game starts
-  if (new Set([GAME_STATES.MULTIPLAYER.COUNTDOWN, GAME_STATES.TYPING, GAME_STATES.MULTIPLAYER.COMPLETED]).has(gameState)) return <MultiplayerGame/>;
+  if (new Set([GAME_STATES.MULTIPLAYER.COUNTDOWN, GAME_STATES.TYPING, GAME_STATES.MULTIPLAYER.COMPLETED, GAME_STATES.MULTIPLAYER.RESULTS]).has(gameState)) return <MultiplayerGame/>;
 
   // view room and participants
   if (gameState === GAME_STATES.MULTIPLAYER.WAITING) return <MultiplayerRoom/>;

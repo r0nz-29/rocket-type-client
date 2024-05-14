@@ -1,7 +1,7 @@
 import {io} from "socket.io-client";
 import {GAME_STATES, useStore} from "../store";
 
-const URL = "localhost:8080";
+const URL = import.meta.env.VIRTUAL_SOCKET_URL;
 export const socket = io(URL, {autoConnect: false});
 
 export default function useSocket() {
@@ -15,7 +15,9 @@ export default function useSocket() {
     setCountdown,
     setRoomId,
     setMultiplayerDuration,
-    tickMultiplayerDuration
+    setMultiplayerTimer,
+    tickMultiplayerDuration,
+    setMultiplayerResults
   } = useStore();
 
   const {roomMembers} = useStore(state => state.multiplayer);
@@ -38,16 +40,18 @@ export default function useSocket() {
       updateGameState(GAME_STATES.MULTIPLAYER.COMPLETED);
     });
 
-    // socket.on("game:result:publish", (resultGraph) => {
-    //   console.log(resultGraph);
-    //   updateGameState(GAME_STATES.MULTIPLAYER.RESULTS);
-    // });
+    socket.on("game:result:publish", (resultGraph) => {
+      console.log(resultGraph);
+      setMultiplayerResults(resultGraph);
+      updateGameState(GAME_STATES.MULTIPLAYER.RESULTS);
+    });
   }
 
   function countdownListeners() {
     socket.on("game:countdown:started", ({para, duration, countdown}) => {
       if (!para || !countdown || !duration) return;
       setMultiplayerDuration(duration);
+      setMultiplayerTimer(duration);
       setMultiplayerPara(para);
       setCountdown(countdown);
       updateGameState(GAME_STATES.MULTIPLAYER.COUNTDOWN);
