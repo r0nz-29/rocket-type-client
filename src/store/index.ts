@@ -90,6 +90,7 @@ type State = {
     startingGame: boolean;
     duration: number;
     gameTimer: number;
+    processing: boolean;
     resultGraph: MultiplayerResultGraphT | null
   }
 }
@@ -121,6 +122,8 @@ type Actions = {
   setMultiplayerDuration: (d: number) => void;
   setMultiplayerTimer: (d: number) => void;
   tickMultiplayerDuration: () => void;
+  showLoading: () => void;
+  hideLoading: () => void;
   setMultiplayerResults: (resultGraph: MultiplayerResultGraphT) => void;
 }
 
@@ -142,6 +145,7 @@ export const useStore = create<State & Actions>((set) => ({
     startingGame: false,
     duration: 0,
     gameTimer: 0,
+    processing: false,
     resultGraph: null
   },
   wpmGraph: [],
@@ -212,6 +216,18 @@ export const useStore = create<State & Actions>((set) => ({
     multiplayer: {
       ...state.multiplayer,
       resultGraph: results,
+    }
+  })),
+  showLoading: () => set((state) => ({
+    multiplayer: {
+      ...state.multiplayer,
+      processing: true,
+    }
+  })),
+  hideLoading: () => set((state) => ({
+    multiplayer: {
+      ...state.multiplayer,
+      processing: false,
     }
   })),
 }));

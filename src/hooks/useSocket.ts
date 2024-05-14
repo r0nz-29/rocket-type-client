@@ -18,7 +18,8 @@ export default function useSocket() {
     setMultiplayerDuration,
     setMultiplayerTimer,
     tickMultiplayerDuration,
-    setMultiplayerResults
+    setMultiplayerResults,
+    showLoading, hideLoading
   } = useStore();
 
   const {roomMembers} = useStore(state => state.multiplayer);
@@ -79,6 +80,7 @@ export default function useSocket() {
   }
   
   function connect(username: string) {
+    showLoading();
     socket.auth = {username};
     socket.connect();
 
@@ -89,10 +91,12 @@ export default function useSocket() {
         setRoomId(roomId);
         updateGameState(GAME_STATES.MULTIPLAYER.WAITING);
       } else addRoomMember(username);
+      hideLoading();
     });
 
     socket.on("fail:username-exists", () => {
       setSocketError("Username already exists");
+      hideLoading();
     });
 
     socket.on("room:members", (members) => {
