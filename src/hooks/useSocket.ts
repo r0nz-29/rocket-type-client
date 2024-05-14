@@ -2,6 +2,7 @@ import {io} from "socket.io-client";
 import {GAME_STATES, useStore} from "../store";
 
 const URL = import.meta.env.API_URL;
+console.log(URL);
 export const socket = io(URL, {autoConnect: false});
 
 export default function useSocket() {
