@@ -11,7 +11,6 @@ export default function MultiplayerGame() {
   const {gameState} = useStore();
   const {cursor, liveWpm, errors} = useGame(duration, GAME_MODES.MULTIPLAYER);
 
-
   useEffect(() => {
     gameListeners();
   }, []);
@@ -36,7 +35,7 @@ export default function MultiplayerGame() {
       </p>
       <p
         className={`transition-all ease-out text-nord9 text-2xl font-bold ${gameState === GAME_STATES.TYPING ? "hidden" : "inline-block"}`}>{countdown}s</p>
-      <p className="break-all text-xl w-full p-4 border border-slate-200 rounded-lg bg-white shadow">
+      <p className="break-words text-xl w-full p-4 border border-slate-200 rounded-lg bg-white shadow">
         {paragraph.split("").map((char, i) => (
           <span key={i} id={`multi-char-at-${i}`}
                 className={`highlight text-gray-500 font-light ${gameState === GAME_STATES.TYPING && i === cursor && "border-b-4 border-pink-500"}`}>
