@@ -2,6 +2,7 @@ import {GAME_MODES, GAME_STATES, SPECIAL_KEYS, useStore} from "../store";
 import {useCallback, useEffect, useState} from "react";
 import {calculateWPM} from "../utils";
 import useTimer from "./useTimer.ts";
+import useSocket from "./useSocket.ts";
 
 export default function useGame(duration: number, mode = GAME_MODES.SOLO) {
   const {currentTime} = useTimer(duration, mode);
@@ -19,6 +20,9 @@ export default function useGame(duration: number, mode = GAME_MODES.SOLO) {
     updateWpmGraph,
     updateErrorGraph
   } = useStore();
+
+  const {roomId} = useStore(state => state.multiplayer);
+  const {syncResults} = useSocket();
 
   const words = (mode === GAME_MODES.MULTIPLAYER) ? multiplayer.paragraph ?? "" : soloParagraph;
 
@@ -88,6 +92,10 @@ export default function useGame(duration: number, mode = GAME_MODES.SOLO) {
     if (currentTime < 0 || gameState !== GAME_STATES.TYPING) return;
     const wpm = calculateWPM(typed, errors, duration - currentTime);
     setLiveWpm(wpm);
+    console.log("roomId:", roomId);
+    if (currentTime === 0 && mode === GAME_MODES.MULTIPLAYER && roomId) {
+      syncResults(roomId, liveWpm, errors);
+    }
     updateWpmGraph({y: Math.max(wpm, 0), x: duration - currentTime});
     updateErrorGraph({y: Math.max(errors, 0), x: duration - currentTime});
   }, [currentTime]);

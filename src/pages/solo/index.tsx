@@ -27,7 +27,7 @@ export default function SoloTest() {
         {currentTime}s
       </p>
       <div className="w-1/2 h-fit">
-        <p className="break-all text-xl w-full p-4 border border-slate-200 rounded-lg bg-white shadow">
+        <p className="break-words text-xl w-full p-4 border border-slate-200 rounded-lg bg-white shadow">
           {words.split("").map((char, i) => (
             <span key={i} id={`char-at-${i}`}
                   className={`highlight text-gray-500 font-light ${gameState === GAME_STATES.TYPING && i === cursor && "border-b-4 border-pink-500"}`}>

@@ -6,8 +6,8 @@ import useGame from "../../../hooks/useGame.ts";
 import MultiplayerResults from "./result.tsx";
 
 export default function MultiplayerGame() {
-  const {paragraph, countdown, gameTimer, duration, roomId} = useStore(state => state.multiplayer);
-  const {gameListeners, syncResults} = useSocket();
+  const {paragraph, countdown, gameTimer, duration} = useStore(state => state.multiplayer);
+  const {gameListeners} = useSocket();
   const {gameState} = useStore();
   const {cursor, liveWpm, errors} = useGame(duration, GAME_MODES.MULTIPLAYER);
 
@@ -16,11 +16,11 @@ export default function MultiplayerGame() {
     gameListeners();
   }, []);
 
-  useEffect(() => {
-    console.log(gameState, roomId);
-    if (gameState !== GAME_STATES.MULTIPLAYER.COMPLETED || !roomId) return;
-    syncResults(roomId, liveWpm, errors);
-  }, [gameState, roomId]);
+  // useEffect(() => {
+  //   console.log(gameState, roomId);
+  //   if (gameState !== GAME_STATES.MULTIPLAYER.COMPLETED || !roomId) return;
+  //   syncResults(roomId, liveWpm, errors);
+  // }, [gameState, roomId]);
 
   if (!paragraph) return <Spinner/>;
 
