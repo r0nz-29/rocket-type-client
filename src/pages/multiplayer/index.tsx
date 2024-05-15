@@ -71,7 +71,7 @@ export default function Multiplayer() {
             <FormLabel>Room Id</FormLabel>
             <Input type="text" name="roomId" placeholder="ask your friends for the room id"/>
           </FormControl>
-          <Button onClick={joinRoom} className={`w-full py-2 text-white font-bold ${gradient} rounded-full`} colorScheme="teal">Join Room</Button>
+          <button onClick={joinRoom} className={`w-full py-2 text-white font-bold ${gradient} rounded-full`}>Join Room</button>
         </form>
       </div>
     </div>
