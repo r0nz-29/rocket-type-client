@@ -1,4 +1,4 @@
-import {Button, FormControl, FormLabel, Input} from "@chakra-ui/react";
+import {FormControl, FormLabel, Input} from "@chakra-ui/react";
 import {useEffect, useRef} from "react";
 import useSocket from "../../hooks/useSocket.ts";
 import {GAME_STATES, useStore} from "../../store";
