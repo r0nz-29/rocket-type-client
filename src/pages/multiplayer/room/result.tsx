@@ -1,5 +1,5 @@
 import Results from "../../solo/results";
-import {GAME_MODES, useStore} from "../../../store";
+import {useStore} from "../../../store";
 import {Spinner} from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 import {wpmColor} from "../../solo/results/result-graph.tsx";
@@ -12,7 +12,7 @@ export default function MultiplayerResults() {
       <p className="text-xl">
         See how you performed
       </p>
-      <Results duration={duration} mode={GAME_MODES.MULTIPLAYER}/>
+      <Results duration={duration}/>
     </div>
   );
 }
@@ -36,6 +36,11 @@ function MultiplayerGraph() {
         {name: "wpm", data: resultGraph.map(r => parseFloat(r.wpm.toFixed(2)))}
       ]}
       options={{
+        chart: {
+          toolbar: {
+            show: false
+          }
+        },
         dataLabels: {
           enabled: true,
         },

@@ -1,4 +1,4 @@
-import {GAME_MODES, useStore} from "../../../store";
+import {useStore} from "../../../store";
 import {useEffect, useState} from "react";
 import {calculateWPM, gradient} from "../../../utils";
 import {Tooltip} from "@chakra-ui/react";
@@ -6,16 +6,15 @@ import ResultGraph from "./result-graph.tsx";
 
 interface Props {
   duration: number;
-  mode?: string;
 }
 
-export default function Results({duration, mode=GAME_MODES.SOLO}: Props) {
+export default function Results({duration}: Props) {
   const {
     errors,
     typedParagraph,
   } = useStore();
 
-  const isMultiplayer = mode === GAME_MODES.MULTIPLAYER;
+  // const isMultiplayer = mode === GAME_MODES.MULTIPLAYER;
 
   const [result, setResult] = useState({
     wpm: 0,
@@ -49,7 +48,7 @@ export default function Results({duration, mode=GAME_MODES.SOLO}: Props) {
             </p>
           </Tooltip>
         </div>
-        <button className={`rounded-full ${gradient} ${isMultiplayer ? "hidden" : "inline-block"} px-6 py-2 text-lg font-bold text-white`}
+        <button className={`rounded-full ${gradient} px-6 py-2 text-lg font-bold text-white`}
                 onClick={() => window.location.reload()}>Restart
         </button>
       </div>
