@@ -3,20 +3,12 @@ import {GAME_MODES, useStore} from "../../../store";
 import {Spinner} from "@chakra-ui/react";
 import Chart from "react-apexcharts";
 import {wpmColor} from "../../solo/results/result-graph.tsx";
-import {gradient} from "../../../utils";
 
 export default function MultiplayerResults() {
   const {duration} = useStore(state => state.multiplayer);
   return (
     <div className="container max-w-7xl flex-1 flex flex-col justify-center items-center">
-      <div className="flex items-center justify-center">
-        <MultiplayerGraph/>
-        <button
-          className={`rounded-full ${gradient} px-6 py-2 text-lg font-bold text-white`}
-          onClick={() => window.location.reload()}>
-          Restart
-        </button>
-      </div>
+      <MultiplayerGraph/>
       <p className="text-xl">
         See how you performed
       </p>
