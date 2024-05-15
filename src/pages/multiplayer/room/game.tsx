@@ -29,11 +29,11 @@ export default function MultiplayerGame() {
         className={`transition-all ease-out text-nord1 text-center ${isTyping ? "text-2xl" : "hidden"}`}>
         current wpm: {liveWpm.toFixed(2)}, errors: <span className="text-red-400">{errors}</span>
       </p>
-      <p className={`transition-all ease-out text-nord9 text-2xl font-bold ${isTyping ? "hidden" : "inline-block"}`}>
-        {countdown}s
+      <p className={`transition-all ease-out text-nord9 text-2xl text-center font-bold ${isTyping ? "hidden" : "inline-block"}`}>
+        Starting in {countdown}s
       </p>
       <p
-        className={`break-words text-xl w-full p-4 border border-slate-200 rounded-lg bg-white shadow ${isTyping ? "opacity-25" : "opacity-100"}`}
+        className={`break-words text-xl w-full p-4 border border-slate-200 rounded-lg bg-white shadow ${isTyping ? "opacity-100" : "opacity-20"}`}
       >
         {paragraph.split("").map((char, i) => (
           <span key={i} id={`multi-char-at-${i}`}
