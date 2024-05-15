@@ -23,7 +23,7 @@ export default function SoloTest() {
       <p className={`transition-all ease-out text-nord1 ${gameState === GAME_STATES.TYPING ? "text-2xl" : "hidden"}`}>
         current wpm: {liveWpm.toFixed(2)}, errors: <span className="text-red-400">{errors}</span></p>
       <p
-        className={`justify-start w-1/2 text-xl mb-4 ${gameState === GAME_STATES.TYPING ? "text-yellow-300" : "text-[#333]"}`}>
+        className={`justify-start w-1/2 text-xl mb-4 ${gameState === GAME_STATES.TYPING ? "text-nord10" : "text-[#333]"}`}>
         {currentTime}s
       </p>
       <div className="w-1/2 h-fit">
