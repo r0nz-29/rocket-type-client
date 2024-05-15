@@ -10,16 +10,11 @@ export default function MultiplayerGame() {
   const {gameListeners} = useSocket();
   const {gameState} = useStore();
   const {cursor, liveWpm, errors} = useGame(duration, GAME_MODES.MULTIPLAYER);
+  const isTyping = gameState === GAME_STATES.TYPING;
 
   useEffect(() => {
     gameListeners();
   }, []);
-
-  // useEffect(() => {
-  //   console.log(gameState, roomId);
-  //   if (gameState !== GAME_STATES.MULTIPLAYER.COMPLETED || !roomId) return;
-  //   syncResults(roomId, liveWpm, errors);
-  // }, [gameState, roomId]);
 
   if (!paragraph) return <Spinner/>;
 
@@ -27,18 +22,22 @@ export default function MultiplayerGame() {
 
   return (
     <div className="container max-w-7xl flex flex-col flex-1 justify-center">
-      <p className="text-2xl text-center w-full text-nord0 font-black">{gameTimer}s</p>
+      <p
+        className={`text-2xl text-center w-full ${isTyping ? "inline-block" : "hidden"} text-nord0 font-black`}>{gameTimer}s</p>
       <br/>
       <p
-        className={`transition-all ease-out text-nord1 text-center ${gameState === GAME_STATES.TYPING ? "text-2xl" : "hidden"}`}>
+        className={`transition-all ease-out text-nord1 text-center ${isTyping ? "text-2xl" : "hidden"}`}>
         current wpm: {liveWpm.toFixed(2)}, errors: <span className="text-red-400">{errors}</span>
       </p>
+      <p className={`transition-all ease-out text-nord9 text-2xl font-bold ${isTyping ? "hidden" : "inline-block"}`}>
+        {countdown}s
+      </p>
       <p
-        className={`transition-all ease-out text-nord9 text-2xl font-bold ${gameState === GAME_STATES.TYPING ? "hidden" : "inline-block"}`}>{countdown}s</p>
-      <p className="break-words text-xl w-full p-4 border border-slate-200 rounded-lg bg-white shadow">
+        className={`break-words text-xl w-full p-4 border border-slate-200 rounded-lg bg-white shadow ${isTyping ? "opacity-25" : "opacity-100"}`}
+      >
         {paragraph.split("").map((char, i) => (
           <span key={i} id={`multi-char-at-${i}`}
-                className={`highlight text-gray-500 font-light ${gameState === GAME_STATES.TYPING && i === cursor && "border-b-4 border-pink-500"}`}>
+                className={`highlight text-gray-500 font-light ${isTyping && i === cursor && "border-b-4 border-pink-500"}`}>
 						{char}
 					</span>
         ))}
