@@ -60,7 +60,7 @@ export default function Multiplayer() {
             <FormLabel>Username</FormLabel>
             <Input type="text" name="username" placeholder="your username"/>
           </FormControl>
-          <button onClick={createRoom} className={`w-full ${gradient} rounded-full`}>Create Room</button>
+          <button onClick={createRoom} className={`w-full py-2 text-white font-bold ${gradient} rounded-full`}>Create Room</button>
         </form>
       </div>
       <div className="p-4">
@@ -71,7 +71,7 @@ export default function Multiplayer() {
             <FormLabel>Room Id</FormLabel>
             <Input type="text" name="roomId" placeholder="ask your friends for the room id"/>
           </FormControl>
-          <Button onClick={joinRoom} className={`w-full ${gradient} rounded-full`} colorScheme="teal">Join Room</Button>
+          <Button onClick={joinRoom} className={`w-full py-2 text-white font-bold ${gradient} rounded-full`} colorScheme="teal">Join Room</Button>
         </form>
       </div>
     </div>
