@@ -5,6 +5,7 @@ import {GAME_STATES, useStore} from "../../store";
 import useNotifications from "../../hooks/useNotification.ts";
 import MultiplayerGame from "./room/game.tsx";
 import MultiplayerRoom from "./room";
+import {gradient} from "../../utils";
 
 export default function Multiplayer() {
   const createRoomForm = useRef<HTMLFormElement | null>(null);
@@ -59,7 +60,7 @@ export default function Multiplayer() {
             <FormLabel>Username</FormLabel>
             <Input type="text" name="username" placeholder="your username"/>
           </FormControl>
-          <Button onClick={createRoom} className="w-full" colorScheme="teal">Create Room</Button>
+          <button onClick={createRoom} className={`w-full ${gradient} rounded-full`}>Create Room</button>
         </form>
       </div>
       <div className="p-4">
@@ -70,7 +71,7 @@ export default function Multiplayer() {
             <FormLabel>Room Id</FormLabel>
             <Input type="text" name="roomId" placeholder="ask your friends for the room id"/>
           </FormControl>
-          <Button onClick={joinRoom} className="w-full" colorScheme="teal">Join Room</Button>
+          <Button onClick={joinRoom} className={`w-full ${gradient} rounded-full`} colorScheme="teal">Join Room</Button>
         </form>
       </div>
     </div>
