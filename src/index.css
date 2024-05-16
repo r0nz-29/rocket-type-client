@@ -1,3 +1,48 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "JetBrains Mono", "Roboto Mono", "Vazirmatn", monospace;
+    transition: all 1ms ease-out;
+}
+
+.d {
+    border: 1px solid red;
+}
+
+.para-container {
+    /*border: 1px solid red;*/
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /*width: 50%;*/
+    height: 100%;
+    word-break: break-all;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.highlight {
+    animation: blink 0.5s infinite;
+}
+
+@keyframes blink {
+    50% {
+        border-color: #000;
+    }
+}
+
+.dotted-background {
+    background-image: radial-gradient(#222 5%,#0000001f 15%);
+    background-color: #000;
+    position: fixed!important;
+    background-position: 0 0,14px 14px;
+    background-size: 16px 16px;
+    width: 100%;
+}
+
+.good-font {
+    font-family: 'Inter Variable';
+}
