@@ -1,7 +1,6 @@
 import {GAME_STATES, useStore} from "../../store";
 import useGame from "../../hooks/useGame.ts";
 import DurationSelector from "./select-duration.tsx";
-import DifficultySelector from "./select-difficulty.tsx";
 import Results from "./results";
 import {gradient} from "../../utils";
 
@@ -17,9 +16,9 @@ export default function SoloTest() {
         className={`transition-all ease-out delay-75 ${gameState === GAME_STATES.TYPING ? "my-0" : "my-32"} mb-2 ${gameState === GAME_STATES.TYPING ? "opacity-0" : "opacity-100"}`}>
         <DurationSelector/>
       </div>
-      <div className={`mb-16 mt-2 transition-all ${gameState === GAME_STATES.TYPING ? "opacity-0" : "opacity-100"}`}>
-        <DifficultySelector/>
-      </div>
+      {/*<div className={`mb-16 mt-2 transition-all ${gameState === GAME_STATES.TYPING ? "opacity-0" : "opacity-100"}`}>*/}
+      {/*  <DifficultySelector/>*/}
+      {/*</div>*/}
       <p className={`transition-all ease-out text-nord1 ${gameState === GAME_STATES.TYPING ? "text-2xl" : "hidden"}`}>
         current wpm: {liveWpm.toFixed(2)}, errors: <span className="text-red-400">{errors}</span></p>
       <p
