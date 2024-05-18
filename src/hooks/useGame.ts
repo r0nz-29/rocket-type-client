@@ -54,12 +54,14 @@ export default function useGame(duration: number, mode = GAME_MODES.SOLO) {
   }, [gameState]);
 
   useEffect(() => {
+    if (!words) return;
     if (cursor === words.length) {
       updateGameState(GAME_STATES.COMPLETED);
     }
-  }, [cursor, updateGameState, words, words.length]);
+  }, [cursor, updateGameState, words]);
 
   const handleKeydown = useCallback((e: KeyboardEvent) => {
+    if (!words) return;
     if (gameState !== GAME_STATES.TYPING || SPECIAL_KEYS.has(e.key)) return;
 
     const identifier = (mode === GAME_MODES.MULTIPLAYER) ? "multi-char-at" : "char-at";

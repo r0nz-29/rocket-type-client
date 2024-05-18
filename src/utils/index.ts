@@ -1,24 +1,10 @@
-import {faker} from "@faker-js/faker";
-import {WORD_COUNT} from "../store";
+import paragraphs from "../pages/solo/paragraphs.json";
 
 export function getParagraph() {
-  return faker.word.words({count: WORD_COUNT}); // 'almost'
+  const p1 = paragraphs[random(paragraphs.length)];
+  const p2 = paragraphs[random(paragraphs.length)];
+  return `${p1}. ${p2}`;
 }
-
-// export function getArrayFromMap(map) {
-//   const board = [];
-//   Object.keys(map).forEach(key => {
-//     const user = {};
-//     user.username = key;
-//     user.speed = map[key]?.speed;
-//     user.pos = map[key]?.pos;
-//     user.over = map[key]?.over;
-//     user.accuracy = map[key]?.accuracy;
-//     user.errors = map[key]?.errors;
-//     board.push(user);
-//   })
-//   return board;
-// }
 
 export const calculateWPM = (
   typedParagraph: string,
@@ -34,8 +20,7 @@ export const calculateWPM = (
 
 export function random(max: number) {
   const res = Math.floor(Math.random() * max);
-  if (res >= max) return max-1;
-  else return res;
+  return Math.min(res, max - 1);
 }
 
 export const gradient = "bg-gradient-to-tl from-nord9 via-nord7 to-nord14";

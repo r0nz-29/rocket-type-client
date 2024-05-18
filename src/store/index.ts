@@ -1,8 +1,6 @@
 import {create} from "zustand";
 import {getParagraph} from "../utils";
 
-export const WORD_COUNT = 30;
-export const MULTIPLAYER_GAME_DURATION = 50;
 export const DURATIONS = [25, 50, 75];
 export const BACKSPACE = "Backspace";
 export const DIFFICULTIES = {
@@ -52,14 +50,6 @@ export type AccountT = {
 export type PointT = {
   x: number;
   y: number;
-};
-
-export type ResultT = {
-  wpm: number,
-  accuracy: number,
-  mode: string,
-  errors: number,
-  duration: number,
 };
 
 export type MultiplayerResultGraphT = {
@@ -128,7 +118,7 @@ type Actions = {
 }
 
 export const useStore = create<State & Actions>((set) => ({
-  soloParagraph: getParagraph() ?? "",
+  soloParagraph: getParagraph(),
   lobbyParagraph: "",
   activeDuration: DURATIONS[0],
   soloDifficulty: DIFFICULTIES.EASY,
