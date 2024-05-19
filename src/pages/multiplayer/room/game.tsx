@@ -4,12 +4,14 @@ import useSocket from "../../../hooks/useSocket.ts";
 import {useEffect} from "react";
 import useGame from "../../../hooks/useGame.ts";
 import MultiplayerResults from "./result.tsx";
+import useDarkMode from "../../../hooks/useDarkMode.ts";
 
 export default function MultiplayerGame() {
   const {paragraph, countdown, gameTimer, duration} = useStore(state => state.multiplayer);
   const {gameListeners} = useSocket();
   const {gameState} = useStore();
-  const {cursor, liveWpm, errors} = useGame(duration, GAME_MODES.MULTIPLAYER);
+  const {darkMode} = useDarkMode();
+  const {cursor, liveWpm, errors} = useGame(duration, GAME_MODES.MULTIPLAYER, darkMode);
   const isTyping = gameState === GAME_STATES.TYPING;
 
   useEffect(() => {

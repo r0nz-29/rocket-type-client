@@ -1,5 +1,5 @@
 import {FormControl, FormLabel, Input} from "@chakra-ui/react";
-import {useEffect, useRef} from "react";
+import {ChangeEvent, useEffect, useState} from "react";
 import useSocket from "../../hooks/useSocket.ts";
 import {GAME_STATES, useStore} from "../../store";
 import useNotifications from "../../hooks/useNotification.ts";
@@ -8,32 +8,27 @@ import MultiplayerRoom from "./room";
 import {gradient} from "../../utils";
 
 export default function Multiplayer() {
-  const createRoomForm = useRef<HTMLFormElement | null>(null);
-  const joinRoomForm = useRef<HTMLFormElement | null>(null);
   const {create, join} = useSocket();
   const {socketError} = useStore(state => state.multiplayer);
   const {gameState} = useStore();
   const {errorNotification} = useNotifications();
+  const [fields, setFields] = useState({
+    username: "", roomId: ""
+  });
+
+  function handleFields(e: ChangeEvent<HTMLInputElement>) {
+    setFields({...fields, [e.target.name]: e.target.value});
+  }
 
   function createRoom() {
-    const form = createRoomForm.current;
-    if (!form) return;
-    const formData = new FormData(form);
-    const username = (formData.get("username") ?? "") as string;
+    const username = fields.username;
     if (!username || username === "") return alert("Enter username");
     create(username);
   }
 
   function joinRoom() {
-    const createForm = createRoomForm.current;
-    const joinForm = joinRoomForm.current;
-    if (!createForm || !joinForm) return;
-    const formData = {
-      create: new FormData(createForm),
-      join: new FormData(joinForm)
-    };
-    const username = formData.create.get("username");
-    const roomId = formData.join.get("roomId");
+    const username = fields.username;
+    const roomId = fields.roomId;
     if (!username || !roomId) return errorNotification("enter username and room id");
     join(roomId as string, username as string);
   }
@@ -51,27 +46,34 @@ export default function Multiplayer() {
 
   // create or join room
   return (
-    <div className="container max-w-7xl grid grid-cols-2 items-center flex-1">
+    <div className="container dark:text-nord6 max-w-7xl grid grid-cols-2 items-center flex-1">
       <div className="p-4">
         <p className="text-lg font-bold text-center">Create Room</p>
         <br/>
-        <form className="flex flex-col gap-y-4" ref={createRoomForm}>
+        <form className="flex flex-col gap-y-4">
           <FormControl>
             <FormLabel>Username</FormLabel>
-            <Input type="text" name="username" placeholder="your username"/>
+            <Input type="text" name="username" borderColor="transparent" value={fields.username} onChange={handleFields}
+                   placeholder="your username"/>
           </FormControl>
-          <button onClick={createRoom} className={`w-full py-2 text-white font-bold ${gradient} rounded-full`}>Create Room</button>
+          <button onClick={createRoom} className={`w-full py-2 text-white font-bold ${gradient} rounded-full`}>Create
+            Room
+          </button>
         </form>
       </div>
       <div className="p-4">
         <p className="text-lg font-bold text-center">Join Room</p>
         <br/>
-        <form className="flex flex-col gap-y-4" ref={joinRoomForm}>
+        <form className="flex flex-col gap-y-4">
           <FormControl>
             <FormLabel>Room Id</FormLabel>
-            <Input type="text" name="roomId" placeholder="ask your friends for the room id"/>
+            <Input type="text" name="roomId" borderColor="transparent" value={fields.roomId} onChange={handleFields}
+                   placeholder="ask your friends for the room id"/>
           </FormControl>
-          <button onClick={joinRoom} className={`w-full py-2 text-white font-bold ${gradient} rounded-full`}>Join Room</button>
+          <button onClick={joinRoom}
+                  disabled={fields.username === "" || fields.roomId === ""}
+                  className={`disabled:opacity-25 w-full py-2 text-white font-bold ${gradient} rounded-full`}>Join Room
+          </button>
         </form>
       </div>
     </div>

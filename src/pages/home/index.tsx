@@ -9,7 +9,7 @@ export function Home() {
       <p
         className={`good-font font-black text-7xl py-4 ${gradient} bg-clip-text text-transparent`}>Rocket
         Type</p>
-      <p className="good-font text-nord1 text-lg text-center mx-auto my-8">Welcome to Rocket Type, the ultimate web
+      <p className="good-font text-nord1 text-lg text-center mx-auto my-8 dark:text-nord6">Welcome to Rocket Type, the ultimate web
         application for improving your typing speed and accuracy! <br/>Whether you're a beginner looking to learn touch
         typing or a seasoned typist aiming to reach new heights<br/> we've got you covered.</p>
       <div className="grid grid-cols-2 gap-4">

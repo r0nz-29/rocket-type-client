@@ -4,7 +4,7 @@ import {calculateWPM} from "../utils";
 import useTimer from "./useTimer.ts";
 import useSocket from "./useSocket.ts";
 
-export default function useGame(duration: number, mode = GAME_MODES.SOLO) {
+export default function useGame(duration: number, mode = GAME_MODES.SOLO, isDarkMode: boolean) {
   const {currentTime} = useTimer(duration, mode);
   const {
     typedParagraph: typed,
@@ -75,7 +75,8 @@ export default function useGame(duration: number, mode = GAME_MODES.SOLO) {
       incrementErrors();
       return;
     } else {
-      char.style.color = "#000";
+      console.log(isDarkMode);
+      char.style.color = isDarkMode ? "#fff" : "#000";
       char.style.fontWeight = "bold";
     }
 

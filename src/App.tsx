@@ -9,7 +9,7 @@ import {Spinner} from "@chakra-ui/react";
 function App() {
   const {processing} = useStore(state => state.multiplayer);
   return (
-    <div className="flex flex-col items-stretch w-full min-h-screen bg-nord6 dark:bg-nord1">
+    <div className="flex flex-col items-stretch w-full min-h-screen bg-nord6 dark:bg-nord0">
       <Header/>
       <Routes>
         <Route path="/" element={<Home/>}/>
