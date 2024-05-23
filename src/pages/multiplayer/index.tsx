@@ -50,7 +50,7 @@ export default function Multiplayer() {
       <div className="p-4">
         <p className="text-lg font-bold text-center">Create Room</p>
         <br/>
-        <form className="flex flex-col gap-y-4">
+        <form onSubmit={e => e.preventDefault()} className="flex flex-col gap-y-4">
           <FormControl>
             <FormLabel>Username</FormLabel>
             <Input type="text" name="username" borderColor="transparent" value={fields.username} onChange={handleFields}
@@ -64,7 +64,7 @@ export default function Multiplayer() {
       <div className="p-4">
         <p className="text-lg font-bold text-center">Join Room</p>
         <br/>
-        <form className="flex flex-col gap-y-4">
+        <form onSubmit={e => e.preventDefault()} className="flex flex-col gap-y-4">
           <FormControl>
             <FormLabel>Room Id</FormLabel>
             <Input type="text" name="roomId" borderColor="transparent" value={fields.roomId} onChange={handleFields}
