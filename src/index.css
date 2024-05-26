@@ -46,3 +46,14 @@
 .good-font {
     font-family: 'Inter Variable';
 }
+
+@font-face {
+    font-family: 'Mackinac';
+    src: url("mackinac-bold.woff2") format('woff2');
+    font-weight: bold;
+    font-style: normal;
+}
+
+.heading-font {
+    font-family: Mackinac, ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}

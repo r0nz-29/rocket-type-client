@@ -8,7 +8,7 @@ export function Header() {
   return (
     <div className="container max-w-7xl py-4 text-nord2">
       <div className="flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold dark:text-nord6">Rocket Type</Link>
+        <Link to="/" className="text-2xl font-bold heading-font dark:text-nord6">Rocket Type</Link>
         <button
           aria-label="toggle theme"
           onClick={toggleTheme}

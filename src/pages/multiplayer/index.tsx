@@ -48,11 +48,11 @@ export default function Multiplayer() {
   return (
     <div className="container dark:text-nord6 max-w-7xl grid grid-cols-2 items-center flex-1">
       <div className="p-4">
-        <p className="text-lg font-bold text-center">Create Room</p>
+        <p className="text-lg font-bold text-center heading-font">Create Room</p>
         <br/>
         <form className="flex flex-col gap-y-4">
           <FormControl>
-            <FormLabel>Username</FormLabel>
+            <FormLabel className="heading-font">Username</FormLabel>
             <Input type="text" name="username" borderColor="transparent" value={fields.username} onChange={handleFields}
                    placeholder="your username"/>
           </FormControl>
@@ -62,11 +62,11 @@ export default function Multiplayer() {
         </form>
       </div>
       <div className="p-4">
-        <p className="text-lg font-bold text-center">Join Room</p>
+        <p className="text-lg font-bold text-center heading-font">Join Room</p>
         <br/>
         <form className="flex flex-col gap-y-4">
           <FormControl>
-            <FormLabel>Room Id</FormLabel>
+            <FormLabel className="heading-font">Room Id</FormLabel>
             <Input type="text" name="roomId" borderColor="transparent" value={fields.roomId} onChange={handleFields}
                    placeholder="ask your friends for the room id"/>
           </FormControl>

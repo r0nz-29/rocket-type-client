@@ -5,9 +5,9 @@ export function Home() {
   const navigate = useNavigate();
   return (
     <div className="flex flex-col flex-1 justify-center items-center container">
-      <p className="good-font text-nord0 font-black text-6xl">Improve your typing with</p>
+      <p className="heading-font text-nord0 font-black text-6xl">Improve your typing with</p>
       <p
-        className={`good-font font-black text-7xl py-4 ${gradient} bg-clip-text text-transparent`}>Rocket
+        className={`heading-font font-black text-7xl py-4 ${gradient} bg-clip-text text-transparent`}>Rocket
         Type</p>
       <p className="good-font text-nord1 text-lg text-center mx-auto my-8 dark:text-nord6">Welcome to Rocket Type, the ultimate web
         application for improving your typing speed and accuracy! <br/>Whether you're a beginner looking to learn touch
