@@ -1,7 +1,8 @@
 import {io} from "socket.io-client";
 import {GAME_STATES, useStore} from "../store";
 
-const URL = "https://rocket-server-a2ie.onrender.com";
+// const URL = "https://rocket-server-a2ie.onrender.com";
+const URL = "https://rockettype.onrender.com";
 console.log(URL);
 export const socket = io(URL, {autoConnect: false});
 
@@ -78,7 +79,7 @@ export default function useSocket() {
     connect(username);
     socket.emit("room:join", {roomId});
   }
-  
+
   function connect(username: string) {
     showLoading();
     socket.auth = {username};
