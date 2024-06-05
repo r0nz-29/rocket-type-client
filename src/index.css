@@ -55,5 +55,6 @@
 }
 
 .heading-font {
-    font-family: Mackinac, ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    font-family: 'Inter Variable';
+    /*font-family: Mackinac, ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;*/
 }
